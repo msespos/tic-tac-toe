@@ -1,4 +1,7 @@
-# A command line implementation of the classic game
+# A command line implementation of the classic game, using classes
+
+class Game
+end
 
 @grid = [1,2,3,4,5,6,7,8,9]
 @current_player = ""
@@ -81,7 +84,7 @@ def play_turn
   if counter == 9
     if game_winner(@grid) == "no winner"
       return "It's a tie!"
-    else 
+    else
       return "#{game_winner(@grid)} wins!"
     end
   else

@@ -1,1 +1,1 @@
-A command line implementation of the classic game.
+A command line implementation of the classic game, using classes.
