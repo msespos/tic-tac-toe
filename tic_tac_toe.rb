@@ -1,10 +1,20 @@
 # A command line implementation of the classic game, using classes
 
 class Game
+
+  def initialize
+    @current_player = ""
+  end
+
 end
 
-@grid = [1,2,3,4,5,6,7,8,9]
-@current_player = ""
+class Board
+
+  def initialize
+    @grid = [1,2,3,4,5,6,7,8,9]
+  end
+
+end
 
 def get_input(user)
   puts "Select one of the available slots"
