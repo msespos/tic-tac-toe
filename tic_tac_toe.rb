@@ -34,6 +34,8 @@ def game_winner(grid)
   elsif ((grid[2] == grid[5] && grid[5] == grid[8]) || # right column win
           (grid[6] == grid[7] && grid[7] == grid[8])) # bottom row win
     return grid[8]
+  else
+    return "no winner"
   end
 end
 
@@ -67,20 +69,29 @@ def initial_state
 end
 
 def play_turn
-  while (game_winner(@grid) != "X" && game_winner(@grid) != "O")
+  counter = 0
+  while (game_winner(@grid) != "X" && game_winner(@grid) != "O" && counter < 9)
     puts "It's #{@current_player}'s turn!"
     display(@grid)
     current_grid = get_input(@current_player)
     display(current_grid)
     @current_player == "X" ? @current_player = "O" : @current_player = "X"
+    counter += 1
   end
-  game_winner(@grid)
+  if counter == 9
+    if game_winner(@grid) == "no winner"
+      return "It's a tie!"
+    else 
+      return "#{game_winner(@grid)} wins!"
+    end
+  else
+    return "#{game_winner(@grid)} wins!"
+  end
 end
 
 def play_game
   initial_state
-  winner = play_turn
-  puts "#{winner} wins!"
+  puts play_turn
 end
 
 play_game
