@@ -22,20 +22,6 @@ class Game
     @current_player = first_player
   end
   
-  def get_input(user)
-    puts "Select one of the available slots"
-    input = gets.chomp.to_i
-    while !input.between?(1,9)
-      puts "Please enter an integer between 1 and 9"
-      input = gets.chomp.to_i
-    end
-    while @board.occupied?
-      puts "Please enter an integer that has not been played yet"
-      input = gets.chomp.to_i
-    end
-    @board.populate_square(user, input)
-  end
-  
   def play_turn
     counter = 0
     while (@board.game_winner != "X" && @board.game_winner != "O" && counter < 9)
@@ -57,6 +43,20 @@ class Game
     end
   end
   
+  def get_input(user)
+    puts "Select one of the available slots"
+    input = gets.chomp.to_i
+    while !input.between?(1,9)
+      puts "Please enter an integer between 1 and 9"
+      input = gets.chomp.to_i
+    end
+    while @board.occupied?
+      puts "Please enter an integer that has not been played yet"
+      input = gets.chomp.to_i
+    end
+    @board.populate_square(user, input)
+  end
+
 end
 
 class Board
