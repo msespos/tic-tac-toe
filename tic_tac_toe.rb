@@ -8,11 +8,12 @@ class Game
   end
 
   def play_game
-    initial_state
-    puts play_turn
+    get_first_player
+    puts play_turns
   end
  
-  def initial_state
+  # get a valid first player from the user
+  def get_first_player
     puts "Who is going first, X or O?"
     first_player = gets.chomp.upcase
     while first_player != "X" && first_player != "O"
@@ -22,27 +23,27 @@ class Game
     @current_player = first_player
   end
   
-  def play_turn
+  # while the game is not over, play a turn:
+  # display the board, get the current player's move, display the new board
+  # at the end of the game, display the game status (winner or "it's a tie")
+  def play_turns
     counter = 0
     while (@board.game_winner != "X" && @board.game_winner != "O" && counter < 9)
       puts "It's #{@current_player}'s turn!"
       @board.display
-      current_grid = get_input(@current_player)
+      get_input(@current_player)
       @board.display
       @current_player == "X" ? @current_player = "O" : @current_player = "X"
       counter += 1
     end
     if counter == 9
-      if @board.game_winner == "no winner"
-        return "It's a tie!"
-      else
-        return "#{@board.game_winner} wins!"
-      end
+      @board.game_winner == "no winner" ? "It's a tie!" : "#{@board.game_winner} wins!"
     else
-      return "#{@board.game_winner} wins!"
+      "#{@board.game_winner} wins!"
     end
   end
   
+  # get a proper move from the current player, and store it in the board
   def get_input(user)
     puts "Select one of the available slots"
     input = gets.chomp.to_i
@@ -65,15 +66,17 @@ class Board
     @grid = [1,2,3,4,5,6,7,8,9]
   end
 
+  # check if a board square already has an X or an O
   def occupied?(input)
     @grid[input - 1] == "X" || @grid[input - 1] == "O"
   end
 
+  # populate a board square
   def populate_square(user, input)
     @grid[input - 1] = user
-    @grid
   end
 
+  # determine if there is a game winner and return that winner or "no winner"
   def game_winner
     if ((@grid[0] == @grid[1] && @grid[1] == @grid[2]) ||  # top row win
             (@grid[0] == @grid[3] && @grid[3] == @grid[6])) # left column win
@@ -91,6 +94,7 @@ class Board
     end
   end
 
+  # display the board
   def display
     puts ""
     puts "                ||         ||"
