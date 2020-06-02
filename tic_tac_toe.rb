@@ -40,9 +40,9 @@ class Game
     counter = 0
     while (@board.game_winner != "X" && @board.game_winner != "O" && counter < 9)
       puts "It's #{@current_player}'s turn!"
-      display
+      @board.display
       current_grid = get_input(@current_player)
-      display
+      @board.display
       @current_player == "X" ? @current_player = "O" : @current_player = "X"
       counter += 1
     end
