@@ -50,7 +50,7 @@ class Game
       puts "Please enter an integer between 1 and 9"
       input = gets.chomp.to_i
     end
-    while @board.occupied?
+    while @board.occupied?(input)
       puts "Please enter an integer that has not been played yet"
       input = gets.chomp.to_i
     end
@@ -65,8 +65,8 @@ class Board
     @grid = [1,2,3,4,5,6,7,8,9]
   end
 
-  def occupied?
-
+  def occupied?(input)
+    @grid[input - 1] == "X" || @grid[input - 1] == "O"
   end
 
   def populate_square(user, input)
