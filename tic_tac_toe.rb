@@ -82,20 +82,24 @@ class Board
 
   # determine if there is a game winner and return that winner or "no winner"
   def game_winner
-    if ((@grid[0] == @grid[1] && @grid[1] == @grid[2]) ||  # top row win
-            (@grid[0] == @grid[3] && @grid[3] == @grid[6])) # left column win
-      return @grid[0]
-    elsif ((@grid[3] == @grid[4] && @grid[4] == @grid[5]) || # middle row win
-            (@grid[1] == @grid[4] && @grid[4] == @grid[7]) || # middle column win
-            (@grid[0] == @grid[4] && @grid[4] == @grid[8]) || # diagonal win
-            (@grid[2] == @grid[4] && @grid[4] == @grid[6])) # diagonal win
-      return @grid[4]
-    elsif ((@grid[2] == @grid[5] && @grid[5] == @grid[8]) || # right column win
-            (@grid[6] == @grid[7] && @grid[7] == @grid[8])) # bottom row win
-      return @grid[8]
-    else
-      return "no winner"
+    # check for a row win
+    [0, 3, 6].each do |i|
+      if (@grid[i] == @grid[i + 1] && @grid[i + 1] == @grid[i + 2])
+        return @grid[i]
+      end
     end
+    # check for a column win
+    [0, 1, 2].each do |i|
+      if (@grid[i] == @grid[i + 3] && @grid[i + 3] == @grid[i + 6])
+        return @grid[i]
+      end
+    end
+    # check for a diagonal win
+    if (@grid[0] == @grid[4] && @grid[4] == @grid[8]) ||
+            (@grid[2] == @grid[4] && @grid[4] == @grid[6])
+      return @grid[4]
+    end
+    return "no winner"
   end
 
   # display the board
