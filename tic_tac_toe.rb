@@ -84,16 +84,19 @@ class Board
   def determine_winner
     win_possibilities = []
     [0, 3, 6].each do |i|
-      win_possibilities.push([@grid[i], @grid[i + 1], @grid[i + 2]])  # wins via rows
+      win_possibilities.push([i, i + 1, i + 2])  # wins via rows
     end
     [0, 1, 2].each do |i|
-      win_possibilities.push([@grid[i], @grid[i + 3], @grid[i + 6]])  # wins via columns
+      win_possibilities.push([i, i + 3, i + 6])  # wins via columns
     end
-    win_possibilities.push([@grid[0], @grid[4], @grid[8]])  # win via diagonal
-    win_possibilities.push([@grid[2], @grid[4], @grid[6]])  # win via diagonal
+    win_possibilities.push([0, 4, 8])  # win via diagonal
+    win_possibilities.push([2, 4, 6])  # win via diagonal
     win_possibilities.each do |win_possibility|
-      if win_possibility.uniq.size == 1
-        return win_possibility[0]
+      win_possibility.each_with_index do |grid_element, i|
+        win_possibility[i] = @grid[grid_element]
+        if win_possibility.uniq.size == 1
+          return win_possibility[0]
+        end
       end
     end
     return "no winner"
