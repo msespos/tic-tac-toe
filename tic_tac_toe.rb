@@ -9,7 +9,7 @@ class Game
 
   def play_game
     get_first_player
-    puts play_turns
+    puts declare_winner(play_turns)
   end
  
   # get a valid first player from the user
@@ -25,7 +25,6 @@ class Game
   
   # while the game is not over, play a turn:
   # display the board, get the current player's move, display the new board
-  # at the end of the game, display the game status (winner or "it's a tie")
   def play_turns
     counter = 0
     while (@board.game_winner != "X" && @board.game_winner != "O" && counter < 9)
@@ -36,6 +35,11 @@ class Game
       @current_player == "X" ? @current_player = "O" : @current_player = "X"
       counter += 1
     end
+    counter
+  end
+
+  # at the end of the game, display the game status (winner or "it's a tie")
+  def declare_winner(counter)
     if counter == 9
       @board.game_winner == "no winner" ? "It's a tie!" : "#{@board.game_winner} wins!"
     else
