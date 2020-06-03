@@ -82,22 +82,23 @@ class Board
 
   # determine if there is a game winner and return that winner or "no winner"
   def game_winner
-    # check for a row win
+    win_possibilities = []
+    # populate with row win possibilities
     [0, 3, 6].each do |i|
-      if (@grid[i] == @grid[i + 1] && @grid[i + 1] == @grid[i + 2])
-        return @grid[i]
-      end
+      win_possibilities.push([@grid[i], @grid[i + 1], @grid[i + 2]])
     end
-    # check for a column win
+    # populate with column win possibilities
     [0, 1, 2].each do |i|
-      if (@grid[i] == @grid[i + 3] && @grid[i + 3] == @grid[i + 6])
-        return @grid[i]
-      end
+      win_possibilities.push([@grid[i], @grid[i + 3], @grid[i + 6]])
     end
-    # check for a diagonal win
-    if (@grid[0] == @grid[4] && @grid[4] == @grid[8]) ||
-            (@grid[2] == @grid[4] && @grid[4] == @grid[6])
-      return @grid[4]
+    # populate with diagonal win possibilities
+    win_possibilities.push([@grid[0], @grid[4], @grid[8]])
+    win_possibilities.push([@grid[2], @grid[4], @grid[6]])
+    #check if any win possibility conditions are met
+    win_possibilities.each do |win_possibility|
+      if win_possibility.uniq.size == 1
+        return win_possibility[0]
+      end
     end
     return "no winner"
   end
