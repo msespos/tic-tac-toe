@@ -27,7 +27,7 @@ class Game
   # display the board, get the current player's move, display the new board
   def play_turns
     counter = 0
-    while (@board.game_winner != "X" && @board.game_winner != "O" && counter < 9)
+    while (@board.determine_winner != "X" && @board.determine_winner != "O" && counter < 9)
       puts "It's #{@current_player}'s turn!"
       @board.display
       get_input(@current_player)
@@ -41,9 +41,9 @@ class Game
   # at the end of the game, display the game status (winner or "it's a tie")
   def declare_winner(counter)
     if counter == 9
-      @board.game_winner == "no winner" ? "It's a tie!" : "#{@board.game_winner} wins!"
+      @board.determine_winner == "no winner" ? "It's a tie!" : "#{@board.determine_winner} wins!"
     else
-      "#{@board.game_winner} wins!"
+      "#{@board.determine_winner} wins!"
     end
   end
   
@@ -81,20 +81,16 @@ class Board
   end
 
   # determine if there is a game winner and return that winner or "no winner"
-  def game_winner
+  def determine_winner
     win_possibilities = []
-    # populate with row win possibilities
     [0, 3, 6].each do |i|
-      win_possibilities.push([@grid[i], @grid[i + 1], @grid[i + 2]])
+      win_possibilities.push([@grid[i], @grid[i + 1], @grid[i + 2]])  # wins via rows
     end
-    # populate with column win possibilities
     [0, 1, 2].each do |i|
-      win_possibilities.push([@grid[i], @grid[i + 3], @grid[i + 6]])
+      win_possibilities.push([@grid[i], @grid[i + 3], @grid[i + 6]])  # wins via columns
     end
-    # populate with diagonal win possibilities
-    win_possibilities.push([@grid[0], @grid[4], @grid[8]])
-    win_possibilities.push([@grid[2], @grid[4], @grid[6]])
-    #check if any win possibility conditions are met
+    win_possibilities.push([@grid[0], @grid[4], @grid[8]])  # win via diagonal
+    win_possibilities.push([@grid[2], @grid[4], @grid[6]])  # win via diagonal
     win_possibilities.each do |win_possibility|
       if win_possibility.uniq.size == 1
         return win_possibility[0]
