@@ -30,7 +30,7 @@ class Game
     while (@board.determine_winner != "X" && @board.determine_winner != "O" && counter < 9)
       puts "It's #{@current_player}'s turn!"
       @board.display
-      get_input(@current_player)
+      process_input(@current_player)
       @board.display
       @current_player == "X" ? @current_player = "O" : @current_player = "X"
       counter += 1
@@ -47,18 +47,28 @@ class Game
     end
   end
   
-  # get a proper move from the current player, and store it in the board
-  def get_input(user)
-    puts "Select one of the available slots"
-    input = gets.chomp.to_i
+  # check that the input is an integer between 1 and 9
+  def correct_number(input)
     while !input.between?(1,9)
       puts "Please enter an integer between 1 and 9"
       input = gets.chomp.to_i
     end
+    input
+  end
+
+  # check that the input has not been played yet
+  def not_played_yet(input)
     while @board.occupied?(input)
       puts "Please enter an integer that has not been played yet"
       input = gets.chomp.to_i
     end
+    input
+  end
+
+  # get a proper move from the current player, and store it in the board
+  def process_input(user)
+    puts "Select one of the available slots"
+    input = not_played_yet(correct_number(gets.chomp.to_i))
     @board.populate_square(user, input)
   end
 
