@@ -91,7 +91,7 @@ class Board
     @grid[input - 1] = user
   end
 
-  # determine if there is a game winner and return that winner or "no winner"
+  # determine if there is a game winner and return that winner or :no_winner
   def determine_winner
     win_possibilities = []
     [0, 3, 6].each do |i|
@@ -105,9 +105,7 @@ class Board
     win_possibilities.each do |win_possibility|
       win_possibility.each_with_index do |grid_element, i|
         win_possibility[i] = @grid[grid_element]
-        if win_possibility.uniq.size == 1
-          return win_possibility[0]
-        end
+        return win_possibility[0] if win_possibility.uniq.size == 1
       end
     end
     :no_winner
