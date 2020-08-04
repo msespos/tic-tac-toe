@@ -104,22 +104,27 @@ class Board
 
   # display the board
   def display
-    puts ""
-    puts "                ||         ||"
-    puts "                ||         ||"
-    puts "           #{@grid[0]}    ||    #{@grid[1]}    ||    #{@grid[2]}"
-    puts "                ||         ||"
-    puts "       =========||=========||========="
-    puts "                ||         ||"
-    puts "           #{@grid[3]}    ||    #{@grid[4]}    ||    #{@grid[5]}"
-    puts "                ||         ||"
-    puts "       =========||=========||========="
-    puts "                ||         ||"
-    puts "                ||         ||"
-    puts "           #{@grid[6]}    ||    #{@grid[7]}    ||    #{@grid[8]}"
-    puts "                ||         ||"
-    puts "                ||         ||"
-    puts ""
+    puts <<-HEREDOC
+
+              ||         ||
+              ||         ||
+         #{@grid[0]}    ||    #{@grid[1]}    ||    #{@grid[2]}
+              ||         ||
+              ||         ||
+     =========||=========||=========
+              ||         ||
+              ||         ||
+         #{@grid[3]}    ||    #{@grid[4]}    ||    #{@grid[5]}
+              ||         ||
+              ||         ||
+     =========||=========||=========
+              ||         ||
+              ||         ||
+         #{@grid[6]}    ||    #{@grid[7]}    ||    #{@grid[8]}
+              ||         ||
+              ||         ||
+
+    HEREDOC
   end
   
 end
