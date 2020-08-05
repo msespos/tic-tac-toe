@@ -82,6 +82,9 @@ end
 
 # the representation of the game board
 class Board
+
+  attr_reader :grid # for testing
+
   def initialize
     @grid = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     @win_possibilities = win_possibilities
@@ -148,5 +151,5 @@ class Board
   end
 end
 
-game = Game.new
-game.play_game
+# game = Game.new
+# game.play_game
