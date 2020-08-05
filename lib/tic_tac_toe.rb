@@ -7,6 +7,20 @@ class Game
   def initialize
     @current_player = ''
     @board = Board.new
+    @win_possibilities = win_possibilities
+  end
+
+  # create the win possibilities array
+  def win_possibilities
+    win_possibilities = []
+    [0, 3, 6].each do |i|
+      win_possibilities.push([i, i + 1, i + 2])  # wins via rows
+    end
+    [0, 1, 2].each do |i|
+      win_possibilities.push([i, i + 3, i + 6])  # wins via columns
+    end
+    win_possibilities.push([0, 4, 8])  # win via diagonal
+    win_possibilities.push([2, 4, 6])  # win via diagonal
   end
 
   def play_game
@@ -29,7 +43,8 @@ class Game
   # display the board, get the current player's move, display the new board
   def play_turns
     counter = 0
-    while @board.determine_winner != 'X' && @board.determine_winner != 'O' && counter < 9
+    while @board.determine_winner(@win_possibilities) != 'X' &&
+          @board.determine_winner(@win_possibilities) != 'O' && counter < 9
       puts "It's #{@current_player}'s turn!"
       @board.display
       process_input(@current_player)
@@ -43,9 +58,13 @@ class Game
   # at the end of the game, display the game status (winner or "it's a tie")
   def declare_winner(counter)
     if counter == 9
-      @board.determine_winner == :no_winner ? "It's a tie!" : "#{@board.determine_winner} wins!"
+      if @board.determine_winner(@win_possibilities) == :no_winner
+        "It's a tie!"
+      else
+        "#{@board.determine_winner(@win_possibilities)} wins!"
+      end
     else
-      "#{@board.determine_winner} wins!"
+      "#{@board.determine_winner(@win_possibilities)} wins!"
     end
   end
 
@@ -92,16 +111,8 @@ class Board
   end
 
   # determine if there is a game winner and return that winner or :no_winner
-  def determine_winner
-    win_possibilities = []
-    [0, 3, 6].each do |i|
-      win_possibilities.push([i, i + 1, i + 2])  # wins via rows
-    end
-    [0, 1, 2].each do |i|
-      win_possibilities.push([i, i + 3, i + 6])  # wins via columns
-    end
-    win_possibilities.push([0, 4, 8])  # win via diagonal
-    win_possibilities.push([2, 4, 6])  # win via diagonal
+  def determine_winner(win_poss)
+    win_possibilities = win_poss.dup.map(&:dup) # because it is a 2D array
     win_possibilities.each do |win_possibility|
       win_possibility.each_with_index do |grid_element, i|
         win_possibility[i] = @grid[grid_element]
