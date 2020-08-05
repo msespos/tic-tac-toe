@@ -6,6 +6,7 @@
 class Game
   def initialize
     @current_player = ''
+    @counter = 0
     @board = Board.new
     @win_possibilities = win_possibilities
   end
@@ -39,20 +40,23 @@ class Game
     @current_player = first_player
   end
 
+  def game_over
+    @board.determine_winner(@win_possibilities) == 'X' ||
+      @board.determine_winner(@win_possibilities) == 'O' || @counter == 9
+  end
+
   # while the game is not over, play a turn:
   # display the board, get the current player's move, display the new board
   def play_turns
-    counter = 0
-    while @board.determine_winner(@win_possibilities) != 'X' &&
-          @board.determine_winner(@win_possibilities) != 'O' && counter < 9
+    until game_over
       puts "It's #{@current_player}'s turn!"
       @board.display
       process_input(@current_player)
       @board.display
       @current_player = @current_player == 'X' ? 'O' : 'X'
-      counter += 1
+      @counter += 1
     end
-    counter
+    @counter
   end
 
   # at the end of the game, display the game status (winner or "it's a tie")
