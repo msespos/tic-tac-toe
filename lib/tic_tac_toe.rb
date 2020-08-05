@@ -8,20 +8,6 @@ class Game
     @current_player = ''
     @counter = 0
     @board = Board.new
-    @win_possibilities = win_possibilities
-  end
-
-  # create the win possibilities array
-  def win_possibilities
-    win_possibilities = []
-    [0, 3, 6].each do |i|
-      win_possibilities.push([i, i + 1, i + 2])  # wins via rows
-    end
-    [0, 1, 2].each do |i|
-      win_possibilities.push([i, i + 3, i + 6])  # wins via columns
-    end
-    win_possibilities.push([0, 4, 8])  # win via diagonal
-    win_possibilities.push([2, 4, 6])  # win via diagonal
   end
 
   def play_game
@@ -41,8 +27,8 @@ class Game
   end
 
   def game_over
-    @board.determine_winner(@win_possibilities) == 'X' ||
-      @board.determine_winner(@win_possibilities) == 'O' || @counter == 9
+    @board.determine_winner == 'X' ||
+      @board.determine_winner == 'O' || @counter == 9
   end
 
   # while the game is not over, play a turn:
@@ -62,13 +48,9 @@ class Game
   # at the end of the game, display the game status (winner or "it's a tie")
   def declare_winner(counter)
     if counter == 9
-      if @board.determine_winner(@win_possibilities) == :no_winner
-        "It's a tie!"
-      else
-        "#{@board.determine_winner(@win_possibilities)} wins!"
-      end
+      @board.determine_winner == :no_winner ? "It's a tie!" : "#{@board.determine_winner} wins!"
     else
-      "#{@board.determine_winner(@win_possibilities)} wins!"
+      "#{@board.determine_winner} wins!"
     end
   end
 
@@ -102,6 +84,20 @@ end
 class Board
   def initialize
     @grid = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    @win_possibilities = win_possibilities
+  end
+
+  # create the win possibilities array
+  def win_possibilities
+    win_possibilities = []
+    [0, 3, 6].each do |i|
+      win_possibilities.push([i, i + 1, i + 2])  # wins via rows
+    end
+    [0, 1, 2].each do |i|
+      win_possibilities.push([i, i + 3, i + 6])  # wins via columns
+    end
+    win_possibilities.push([0, 4, 8])  # win via diagonal
+    win_possibilities.push([2, 4, 6])  # win via diagonal
   end
 
   # check if a board square already has an X or an O
@@ -115,8 +111,8 @@ class Board
   end
 
   # determine if there is a game winner and return that winner or :no_winner
-  def determine_winner(win_poss)
-    win_possibilities = win_poss.dup.map(&:dup) # because it is a 2D array
+  def determine_winner
+    win_possibilities = @win_possibilities.dup.map(&:dup) # because it is a 2D array
     win_possibilities.each do |win_possibility|
       win_possibility.each_with_index do |grid_element, i|
         win_possibility[i] = @grid[grid_element]
