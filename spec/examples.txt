@@ -1,4 +1,4 @@
 example_id                          | status | run_time        |
 ----------------------------------- | ------ | --------------- |
-./spec/tic_tac_toe_spec.rb[1:1:1:1] | passed | 0.00049 seconds |
-./spec/tic_tac_toe_spec.rb[1:1:1:2] | failed | 0.00472 seconds |
+./spec/tic_tac_toe_spec.rb[1:1:1:1] | passed | 0.00506 seconds |
+./spec/tic_tac_toe_spec.rb[1:1:1:2] | passed | 0.00029 seconds |

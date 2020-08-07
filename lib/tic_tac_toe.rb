@@ -26,7 +26,7 @@ class Game
     @current_player = first_player
   end
 
-  def game_over
+  def game_over?
     @board.determine_winner == 'X' ||
       @board.determine_winner == 'O' || @counter == 9
   end
@@ -34,7 +34,7 @@ class Game
   # while the game is not over, play a turn:
   # display the board, get the current player's move, display the new board
   def play_turns
-    until game_over
+    until game_over?
       puts "It's #{@current_player}'s turn!"
       @board.display
       process_input(@current_player)
