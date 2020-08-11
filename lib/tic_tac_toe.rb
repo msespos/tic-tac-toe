@@ -45,13 +45,14 @@ class Game
     @counter
   end
 
+  # check for a tie or a winner (used when counter is at 9)
+  def tie_or_win
+    @board.determine_winner == :no_winner ? "It's a tie!" : "#{@board.determine_winner} wins!"
+  end
+
   # at the end of the game, display the game status (winner or "it's a tie")
   def declare_winner(counter)
-    if counter == 9
-      @board.determine_winner == :no_winner ? "It's a tie!" : "#{@board.determine_winner} wins!"
-    else
-      "#{@board.determine_winner} wins!"
-    end
+    counter == 9 ? tie_or_win : "#{@board.determine_winner} wins!"
   end
 
   # check that the input is an integer between 1 and 9
@@ -73,16 +74,15 @@ class Game
   end
 
   # get a proper move from the current player, and store it in the board
-  def process_input(user)
+  def process_input(token)
     puts 'Select one of the available slots'
     input = not_played_yet(correct_number(gets.chomp.to_i))
-    @board.populate_square(user, input)
+    @board.populate_square(token, input)
   end
 end
 
 # the representation of the game board
 class Board
-
   attr_reader :grid
 
   def initialize
