@@ -55,6 +55,15 @@ class Game
     counter == 9 ? tie_or_win : "#{@board.determine_winner} wins!"
   end
 
+  # get a proper move from the current player, and store it in the board
+  def process_input(token)
+    puts 'Select one of the available slots'
+    input = not_played_yet(correct_number(gets.chomp.to_i))
+    @board.populate_square(token, input)
+  end
+
+  private
+
   # check that the input is an integer between 1 and 9
   def correct_number(input)
     until input.between?(1, 9)
@@ -72,19 +81,10 @@ class Game
     end
     input
   end
-
-  # get a proper move from the current player, and store it in the board
-  def process_input(token)
-    puts 'Select one of the available slots'
-    input = not_played_yet(correct_number(gets.chomp.to_i))
-    @board.populate_square(token, input)
-  end
 end
 
 # the representation of the game board
 class Board
-  attr_reader :grid
-
   def initialize
     @grid = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     @win_possibilities = win_possibilities

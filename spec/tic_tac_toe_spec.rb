@@ -27,13 +27,21 @@ RSpec.describe Game do
   end
 
   describe '#determine_first_player' do
-    context '' do
+    context 'when #gets returns "X"' do
+      before do
+        allow(game).to receive(:puts)
+        allow(game).to receive(:gets).and_return('X')
+      end
+
+      it 'sets @current_player to "X"' do
+        expect(game.determine_first_player).to eq('X')
+      end
     end
   end
 
   # got assistance with this test from rlmoser
   describe '#game_over?' do
-    let(:board_over) { double('board') }
+    let(:board_over) { instance_double(Board) }
     context 'when @board.determine_winner returns "X"' do
       it 'returns true' do
         allow(board_over).to receive(:determine_winner).and_return('X')
@@ -72,7 +80,7 @@ RSpec.describe Game do
   end
 
   describe '#tie_or_win' do
-    let(:board_over) { double('board') }
+    let(:board_over) { instance_double(Board) }
     context 'when @board.determine_winner returns :no_winner' do
       it 'returns "It\'s a tie!"' do
         allow(board_over).to receive(:determine_winner).and_return(:no_winner)
@@ -106,23 +114,13 @@ RSpec.describe Game do
       end
     end
 
-    let(:board_over) { double('board') }
+    let(:board_over) { instance_double(Board) }
     context 'when counter is 8' do
       it 'returns result of @board.determine_winner' do
         allow(board_over).to receive(:determine_winner).and_return('X')
         game.instance_variable_set(:@board, board_over)
         expect(game.declare_winner(8)).to eq('X wins!')
       end
-    end
-  end
-
-  describe '#correct_number' do
-    context '' do
-    end
-  end
-
-  describe '#not_played_yet' do
-    context '' do
     end
   end
 
@@ -147,18 +145,21 @@ RSpec.describe Board do
     context 'when given the number of a square that has an X' do
       it 'returns true' do
         board.instance_variable_set(:@grid, [1, 2, 'X', 4, 5, 6, 7, 8, 9])
-        expect(board.occupied?(3)).to eq(true)
+        x_position = 3
+        expect(board.occupied?(x_position)).to be true
       end
     end
     context 'when given the number of a square that has an O' do
       it 'returns true' do
         board.instance_variable_set(:@grid, [1, 2, 'O', 4, 5, 6, 7, 8, 9])
-        expect(board.occupied?(3)).to eq(true)
+        o_position = 3
+        expect(board.occupied?(o_position)).to be true
       end
     end
     context 'when given the number of a square that is empty' do
       it 'returns false' do
-        expect(board.occupied?(3)).to eq(false)
+        empty_position = 3
+        expect(board.occupied?(empty_position)).to be false
       end
     end
   end
@@ -167,7 +168,7 @@ RSpec.describe Board do
     context 'when given a token and a number' do
       it 'populates the grid array appropriately' do
         board.populate_square('X', 1)
-        expect(board.grid).to eq(['X', 2, 3, 4, 5, 6, 7, 8, 9])
+        expect(board.instance_variable_get(:@grid)).to eq(['X', 2, 3, 4, 5, 6, 7, 8, 9])
       end
     end
   end
