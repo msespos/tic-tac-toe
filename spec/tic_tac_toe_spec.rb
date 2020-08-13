@@ -19,6 +19,11 @@ RSpec.describe Game do
         game.play_game
       end
 
+      it 'calls play_turns' do
+        expect(game).to receive(:play_turns)
+        game.play_game
+      end
+
       it 'calls declare_winner' do
         expect(game).to receive(:declare_winner)
         game.play_game
@@ -27,7 +32,7 @@ RSpec.describe Game do
   end
 
   describe '#determine_first_player' do
-    context 'when #gets returns "X"' do
+    context 'when :gets returns "X"' do
       before do
         allow(game).to receive(:puts)
         allow(game).to receive(:gets).and_return('X')
@@ -35,6 +40,17 @@ RSpec.describe Game do
 
       it 'sets @current_player to "X"' do
         expect(game.determine_first_player).to eq('X')
+      end
+    end
+
+    context 'when :gets returns an invalid value then returns "O"' do
+      before do
+        allow(game).to receive(:puts).twice
+        allow(game).to receive(:gets).and_return('A', 'O')
+      end
+
+      it 'sets @current_player to "O"' do
+        expect(game.determine_first_player).to eq('O')
       end
     end
   end
@@ -110,7 +126,8 @@ RSpec.describe Game do
     context 'when counter is 9' do
       it 'returns result of tie_or_win' do
         allow(game).to receive(:tie_or_win).and_return('It\'s a tie!')
-        expect(game.declare_winner(9)).to eq('It\'s a tie!')
+        game.instance_variable_set(:@counter, 9)
+        expect(game.declare_winner).to eq('It\'s a tie!')
       end
     end
 
@@ -119,13 +136,23 @@ RSpec.describe Game do
       it 'returns result of @board.determine_winner' do
         allow(board_over).to receive(:determine_winner).and_return('X')
         game.instance_variable_set(:@board, board_over)
-        expect(game.declare_winner(8)).to eq('X wins!')
+        game.instance_variable_set(:@counter, 8)
+        expect(game.declare_winner).to eq('X wins!')
       end
     end
   end
 
   describe '#process_input' do
-    context '' do
+    context 'when the token is "X" and the input is 1' do
+      before do
+        allow(game).to receive(:puts)
+        allow(game).to receive(:valid_input).and_return(1)
+      end
+
+      it 'passes "X" and 1 to @board.populate square' do
+        expect_any_instance_of(Board).to receive(:populate_square).with('X', 1)
+        game.process_input('X')
+      end
     end
   end
 end

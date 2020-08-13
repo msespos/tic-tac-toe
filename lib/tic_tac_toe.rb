@@ -12,7 +12,8 @@ class Game
 
   def play_game
     determine_first_player
-    puts declare_winner(play_turns)
+    play_turns
+    puts declare_winner
   end
 
   # get a valid first player from the user
@@ -42,7 +43,6 @@ class Game
       @current_player = @current_player == 'X' ? 'O' : 'X'
       @counter += 1
     end
-    @counter
   end
 
   # check for a tie or a winner (used when counter is at 9)
@@ -51,35 +51,35 @@ class Game
   end
 
   # at the end of the game, display the game status (winner or "it's a tie")
-  def declare_winner(counter)
-    counter == 9 ? tie_or_win : "#{@board.determine_winner} wins!"
+  def declare_winner
+    @counter == 9 ? tie_or_win : "#{@board.determine_winner} wins!"
   end
 
   # get a proper move from the current player, and store it in the board
   def process_input(token)
     puts 'Select one of the available slots'
-    input = not_played_yet(correct_number(gets.chomp.to_i))
+    input = valid_input(gets.chomp.to_i)
     @board.populate_square(token, input)
   end
 
   private
 
   # check that the input is an integer between 1 and 9
-  def correct_number(input)
-    until input.between?(1, 9)
-      puts 'Please enter an integer between 1 and 9'
+  def valid_input(input)
+    until correct_number?(input) && not_played_yet?(input)
+      puts 'Please enter an integer between 1 and 9 that has not been played yet'
       input = gets.chomp.to_i
     end
     input
   end
 
+  def correct_number?(input)
+    input.between?(1, 9)
+  end
+
   # check that the input has not been played yet
-  def not_played_yet(input)
-    while @board.occupied?(input)
-      puts 'Please enter an integer that has not been played yet'
-      input = gets.chomp.to_i
-    end
-    input
+  def not_played_yet?(input)
+    !@board.occupied?(input)
   end
 end
 
