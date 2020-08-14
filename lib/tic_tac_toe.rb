@@ -19,10 +19,10 @@ class Game
   # get a valid first player from the user
   def determine_first_player
     puts 'Who is going first, X or O?'
-    first_player = gets.chomp.upcase
+    first_player = obtain_letter
     while first_player != 'X' && first_player != 'O'
       puts 'Please enter X or O'
-      first_player = gets.chomp.upcase
+      first_player = obtain_letter
     end
     @current_player = first_player
   end
@@ -58,7 +58,7 @@ class Game
   # get a proper move from the current player, and store it in the board
   def process_input(token)
     puts 'Select one of the available slots'
-    input = valid_input(gets.chomp.to_i)
+    input = valid_input(obtain_number)
     @board.populate_square(token, input)
   end
 
@@ -81,6 +81,14 @@ class Game
   def not_played_yet?(input)
     !@board.occupied?(input)
   end
+end
+
+def obtain_letter
+  gets.chomp.upcase
+end
+
+def obtain_number
+  gets.chomp.to_i
 end
 
 # the representation of the game board
@@ -151,5 +159,5 @@ class Board
   end
 end
 
-# game = Game.new
-# game.play_game
+game = Game.new
+game.play_game

@@ -143,14 +143,17 @@ RSpec.describe Game do
   end
 
   describe '#process_input' do
+    let(:board_over) { instance_double(Board) }
     context 'when the token is "X" and the input is 1' do
       before do
+        allow(board_over).to receive(:determine_winner).and_return('X')
+        game.instance_variable_set(:@board, board_over)
         allow(game).to receive(:puts)
         allow(game).to receive(:valid_input).and_return(1)
       end
 
       it 'passes "X" and 1 to @board.populate square' do
-        expect_any_instance_of(Board).to receive(:populate_square).with('X', 1)
+        expect(board_over).to receive(:populate_square).with('X', 1)
         game.process_input('X')
       end
     end
